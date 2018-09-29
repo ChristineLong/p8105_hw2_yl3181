@@ -1,0 +1,22 @@
+---
+title: "p8105_hw2_yl3181"
+author: "Yuelin Long"
+date: "September 28, 2018"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problem 1
+
+
+```{r}
+library(tidyverse)
+nyc_subway = read_csv("NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>%
+             janitor::clean_names() %>%
+             select(line:entry,vending, ada) %>% 
+             mutate(entry = recode(entry, "YES" = as.logical(1), "NO" = as.logical(0))) 
+```
+
