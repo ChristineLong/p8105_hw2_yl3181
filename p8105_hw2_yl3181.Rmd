@@ -11,12 +11,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Problem 1
 
-
+Read and Clean the data. Generate a summary of the data.
 ```{r}
 library(tidyverse)
 nyc_subway = read_csv("NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>%
              janitor::clean_names() %>%
              select(line:entry,vending, ada) %>% 
              mutate(entry = recode(entry, "YES" = as.logical(1), "NO" = as.logical(0))) 
+
+skimr::skim(nyc_subway)
+
 ```
 
+Summary:
+Data name: nyc_subway
+Variables included: `r names(nyc_subway)`
+Data dimension (rows x columns): `r dim(nyc_subway)`
