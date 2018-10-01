@@ -21,5 +21,11 @@ nyc_subway = read_csv("NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>%
              gather(key = route_num, value = route_val, starts_with("route")) %>%
              separate(route_num, into = c("extra_route","route"), sep = 5) %>%
              select(-extra_route)
-
 ```
+
+Summary:
+
++ Data name: nyc_subway
++ Variables included: `r names(nyc_subway)`
++ Data cleaning steps: clean names -> select variables needed -> change character variables to logical -> gather route variables together -> clean route_num variable
++ Data dimension (rows x columns): `r dim(nyc_subway)`
