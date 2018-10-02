@@ -76,3 +76,14 @@ Data summary:
 + The total N for Mr. Trash is `r nrow(trash_2016_2017)` , while the key variables are `r names(trash_2016_2017)`
 + The total precipitation in 2017 is `r sum(trash_2017$total)`
 + The median number of sports balls in a dumpster in 2016 is `r median(mr_trash[mr_trash$year==2016,]$sports_balls, na.rm = TRUE)`
+
+
+## Problem 3
+```{r}
+library(p8105.datasets)
+brfss = janitor::clean_names(brfss_smart2010) %>%
+    filter(topic == "Overall Health") %>%
+    select(year:locationdesc, response, data_value) %>%
+    spread(key = response, value = data_value) %>%
+    mutate(excellent_verygood = Excellent + `Very good`) 
+```
