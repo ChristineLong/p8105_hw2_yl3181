@@ -22,6 +22,8 @@ nyc_subway = read_csv("NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>%
              separate(route_num, into = c("extra_route","route"), sep = 5) %>%
              select(-extra_route) %>%
              filter(!is.na(route_val))
+
+nyc_distinct_stations = distinct(nyc_subway, line, station_name, .keep_all = TRUE)
 ```
 
 Summary:
@@ -34,8 +36,8 @@ Summary:
 
 Answer to the questions:
 
-+ Number of distinct stations: `r nrow(distinct(nyc_subway,line, station_name))`
-+ Number of stations with ADA compliance: `r nrow(distinct(nyc_subway[nyc_subway$ada == 1,],station_name,line))`
-+ Proportion of station entrance/exit: 
-+ Number of distinct stations serving A train:
-+ Number of distinct stations serving A train with ADA compliance:
++ Number of distinct stations: `r nrow(nyc_distinct_stations)`
++ Number of stations with ADA compliance: `r nrow(nyc_distinct_stations[nyc_distinct_stations$ada == 1,])`
++ Proportion of station entrance without vending: `r nrow(nyc_distinct_stations[(nyc_distinct_stations$vending == "NO")&(nyc_distinct_stations$entry == "TRUE"),]) /  nrow(nyc_distinct_stations[nyc_distinct_stations$vending == "NO",])`
++ Number of distinct stations serving A train: `r nrow(nyc_distinct_stations[nyc_distinct_stations$route_val == "A",])`
++ Number of distinct stations serving A train with ADA compliance: `r nrow(nyc_distinct_stations[nyc_distinct_stations$route_val == "A" & nyc_distinct_stations$ada == "TRUE",])`
