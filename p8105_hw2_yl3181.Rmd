@@ -41,3 +41,38 @@ Answer to the questions:
 + Proportion of station entrance without vending: `r nrow(nyc_distinct_stations[(nyc_distinct_stations$vending == "NO")&(nyc_distinct_stations$entry == "TRUE"),]) /  nrow(nyc_distinct_stations[nyc_distinct_stations$vending == "NO",])`
 + Number of distinct stations serving A train: `r nrow(nyc_distinct_stations[nyc_distinct_stations$route_val == "A",])`
 + Number of distinct stations serving A train with ADA compliance: `r nrow(nyc_distinct_stations[nyc_distinct_stations$route_val == "A" & nyc_distinct_stations$ada == "TRUE",])`
+
+
+## Problem 2
+
+Load the datasets:
+```{r}
+mr_trash = readxl::read_excel("HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "Mr. Trash Wheel", range = "A2:N258") %>%
+    janitor::clean_names() %>%
+    filter(!is.na(dumpster)) %>%
+    mutate(sports_balls = as.integer(sports_balls))
+
+trash_2016 = readxl::read_excel("HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2016 Precipitation", range = "A2:B14") %>%
+    janitor::clean_names() %>%
+    mutate(year = 2016) %>%
+    filter(!is.na(total))
+
+trash_2017 = readxl::read_excel("HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2017 Precipitation", range = "A2:B14") %>%
+    janitor::clean_names() %>%
+    mutate(year = 2017) %>%
+    filter(!is.na(total))
+
+library(plyr)
+
+trash_2016_2017 = bind_rows(trash_2016, trash_2017)  %>%
+    janitor::clean_names() %>%
+    dplyr::rename(precipitation = total) %>%
+    mutate(month = mapvalues(month,from = c(1:12), to = month.name))
+```
+
+Data summary:
+
++ The total N for Mr. Trash is `r nrow(mr_trash)`, while the examples of key variables are `r names(mr_trash[,1:7])`
++ The total N for Mr. Trash is `r nrow(trash_2016_2017)` , while the key variables are `r names(trash_2016_2017)`
++ The total precipitation in 2017 is `r sum(trash_2017$total)`
++ The median number of sports balls in a dumpster in 2016 is `r median(mr_trash[mr_trash$year==2016,]$sports_balls, na.rm = TRUE)`
