@@ -95,3 +95,18 @@ Data Summary:
 + State that is observed the most: `r dplyr::count(brfss,locationabbr,sort = TRUE)[1,1]`
 + In 2002, the median of the “Excellent” response value is `r median(brfss[brfss$year==2002,]$Excellent, na.rm = TRUE)`
 
+Data Visualization:
+
+A histogram of “Excellent” response values in the year 2002
+
+```{r}
+ggplot(brfss,aes(x = Excellent)) + geom_histogram(binwidth = 3)
+```
+
+A scatterplot showing the proportion of “Excellent” response values in New York County and Queens County (both in NY State) in each year from 2002 to 2010.
+
+```{r}
+ggplot(brfss[brfss$locationdesc %in% c("NY - New York County", "NY - Queens County"),],aes(x = year, y = Excellent, color = locationdesc)) + 
+    geom_point() +
+    geom_smooth(se = FALSE) 
+```
