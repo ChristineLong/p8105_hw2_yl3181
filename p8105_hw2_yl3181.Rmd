@@ -17,13 +17,15 @@ library(tidyverse)
 nyc_subway = read_csv("NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>%
              janitor::clean_names() %>%
              select(line:entry,vending, ada) %>% 
-             mutate(entry = recode(entry, "YES" = as.logical(1), "NO" = as.logical(0))) %>% 
-             gather(key = route_num, value = route_val, starts_with("route")) %>%
+             mutate(entry = recode(entry, "YES" = as.logical(1), "NO" = as.logical(0)))
+```
+
+```{r}
+nyc_subway_clean =  gather(nyc_subway, key = route_num, value = route_val, starts_with("route")) %>%
              separate(route_num, into = c("extra_route","route"), sep = 5) %>%
              select(-extra_route) %>%
-             filter(!is.na(route_val))
-
-nyc_distinct_stations = distinct(nyc_subway, line, station_name, .keep_all = TRUE)
+             filter(!is.na(route_val)) %>%
+             distinct(nyc_subway, line, station_name, .keep_all = TRUE)
 ```
 
 Summary:
@@ -32,15 +34,16 @@ Summary:
 + Variables included: `r names(nyc_subway)`
 + Data cleaning steps: clean names -> select variables needed -> change character variables to logical -> gather route variables together -> clean route_num variable
 + Data dimension (rows x columns): `r dim(nyc_subway)`
++ Data quality: not tidy because the route1 - route11 should be values instead of column names 
 
 
 Answer to the questions:
 
-+ Number of distinct stations: `r nrow(nyc_distinct_stations)`
-+ Number of stations with ADA compliance: `r nrow(nyc_distinct_stations[nyc_distinct_stations$ada == 1,])`
-+ Proportion of station entrance without vending: `r nrow(nyc_distinct_stations[(nyc_distinct_stations$vending == "NO")&(nyc_distinct_stations$entry == "TRUE"),]) /  nrow(nyc_distinct_stations[nyc_distinct_stations$vending == "NO",])`
-+ Number of distinct stations serving A train: `r nrow(nyc_distinct_stations[nyc_distinct_stations$route_val == "A",])`
-+ Number of distinct stations serving A train with ADA compliance: `r nrow(nyc_distinct_stations[nyc_distinct_stations$route_val == "A" & nyc_distinct_stations$ada == "TRUE",])`
++ Number of distinct stations: `r nrow(nyc_subway_clean)`
++ Number of stations with ADA compliance: `r nrow(nyc_subway_clean[nyc_subway_clean$ada == 1,])`
++ Proportion of station entrance without vending: `r nrow(nyc_subway[(nyc_subway$vending == "NO")&(nyc_subway$entry == "TRUE"),]) /  nrow(nyc_subway[nyc_subway$vending == "NO",])`
++ Number of distinct stations serving A train: `r nrow(nyc_subway_clean[nyc_subway_clean$route_val == "A",])`
++ Number of distinct stations serving A train with ADA compliance: `r nrow(nyc_subway_clean[nyc_subway_clean$route_val == "A" & nyc_subway_clean$ada == "TRUE",])`
 
 
 ## Problem 2
@@ -73,7 +76,7 @@ trash_2016_2017 = bind_rows(trash_2016, trash_2017)  %>%
 Data summary:
 
 + The total N for Mr. Trash is `r nrow(mr_trash)`, while the examples of key variables are `r names(mr_trash[,1:7])`
-+ The total N for Mr. Trash is `r nrow(trash_2016_2017)` , while the key variables are `r names(trash_2016_2017)`
++ The total N for trash in 2016 and 2017 is `r nrow(trash_2016_2017)` , while the key variables are `r names(trash_2016_2017)`
 + The total precipitation in 2017 is `r sum(trash_2017$total)`
 + The median number of sports balls in a dumpster in 2016 is `r median(mr_trash[mr_trash$year==2016,]$sports_balls, na.rm = TRUE)`
 
