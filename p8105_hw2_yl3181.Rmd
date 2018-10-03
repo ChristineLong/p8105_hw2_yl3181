@@ -31,7 +31,6 @@ Summary:
 + Data quality: not tidy because the route1 - route11 should be values instead of column names 
 
 ```{r}
-
 # Further clean the data by change route from wide format to long format, clean the route variables, remove missing values and duplicates
 nyc_subway_clean =  gather(nyc_subway, key = route_num, value = route_val, starts_with("route")) %>%
              separate(route_num, into = c("extra_route","route"), sep = 5) %>%
@@ -59,7 +58,7 @@ Load the datasets:
 mr_trash = readxl::read_excel("HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "Mr. Trash Wheel", range = "A2:N258") %>%
     janitor::clean_names() %>%
     filter(!is.na(dumpster)) %>%
-    mutate(sports_balls = as.integer(sports_balls))
+    mutate(sports_balls = as.integer(round(sports_balls)))
 
 # Load 2016 data, clean names, add variable year, and remove missing values 
 trash_2016 = readxl::read_excel("HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2016 Precipitation", range = "A2:B14") %>%
