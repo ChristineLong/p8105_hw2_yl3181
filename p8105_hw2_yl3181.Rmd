@@ -54,7 +54,7 @@ Answer to the questions:
 Load the datasets:
 ```{r}
 
-# Load Mr.trash data, clean names, remove missing values and change variable type to integer
+# Load Mr.trash data, clean names, remove missing values and round sports_ball to integer and change its type to integer
 mr_trash = readxl::read_excel("HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "Mr. Trash Wheel", range = "A2:N258") %>%
     janitor::clean_names() %>%
     filter(!is.na(dumpster)) %>%
