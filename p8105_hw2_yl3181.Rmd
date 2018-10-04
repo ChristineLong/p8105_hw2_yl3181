@@ -55,19 +55,19 @@ Load the datasets:
 ```{r}
 
 # Load Mr.trash data, clean names, remove missing values and round sports_ball to integer and change its type to integer
-mr_trash = readxl::read_excel("HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "Mr. Trash Wheel", range = "A2:N258") %>%
+mr_trash = readxl::read_excel("HealthyHarborWaterWheelTotals2018-7-28.xlsx", sheet = "Mr. Trash Wheel", range = "A2:N258") %>%
     janitor::clean_names() %>%
     filter(!is.na(dumpster)) %>%
     mutate(sports_balls = as.integer(round(sports_balls)))
 
 # Load 2016 data, clean names, add variable year, and remove missing values 
-trash_2016 = readxl::read_excel("HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2016 Precipitation", range = "A2:B14") %>%
+trash_2016 = readxl::read_excel("HealthyHarborWaterWheelTotals2018-7-28.xlsx", sheet = "2016 Precipitation", range = "A2:B14") %>%
     janitor::clean_names() %>%
     mutate(year = 2016) %>%
     filter(!is.na(total))
 
 # Load 2017 data, clean names, add variable year, and remove missing values 
-trash_2017 = readxl::read_excel("HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2017 Precipitation", range = "A2:B14") %>%
+trash_2017 = readxl::read_excel("HealthyHarborWaterWheelTotals2018-7-28.xlsx", sheet = "2017 Precipitation", range = "A2:B14") %>%
     janitor::clean_names() %>%
     mutate(year = 2017) %>%
     filter(!is.na(total))
